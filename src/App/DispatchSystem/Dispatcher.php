@@ -3,6 +3,7 @@
 namespace App\DispatchSystem;
 
 use App\Couriers\CourierInterface;
+use App\Couriers\CouriersConfig;
 use App\DispatchSystem\BatchFormats\DispatchPeriodInterface;
 use App\Factories\ConsignmentFactory;
 
@@ -18,8 +19,6 @@ use App\Factories\ConsignmentFactory;
 class Dispatcher
 {
     /**
-     * It will take
-     *
      * @var DispatchPeriodInterface
      */
     protected $dispatchPeriod;
@@ -30,8 +29,8 @@ class Dispatcher
     protected $parcelQueue;
 
     private $availableCouriers = [
-        'royal' => null,
-        'anc'   => null,
+        CouriersConfig::ROYAL_MAIL => null,
+        CouriersConfig::ANC        => null,
     ];
 
     /**
@@ -54,22 +53,22 @@ class Dispatcher
      */
     public function setCouriers(CourierInterface $royalMail, CourierInterface $anc)
     {
-        $this->availableCouriers['royal'] = $royalMail;
-        $this->availableCouriers['anc']   = $anc;
+        $this->availableCouriers[CouriersConfig::ROYAL_MAIL] = $royalMail;
+        $this->availableCouriers[CouriersConfig::ANC]        = $anc;
     }
 
-    public function addConsignment(string $courierName)
+    public function addConsignment(int $courierId)
     {
         // Checking if we can process. I've added more explanation for on WorkingHoursBatch class
         $this->dispatchPeriod->isDispatchAvailable();
 
         // just checking if I have that type of courier, will return false for now but it should implement better handling for something like that
-        if (!isset($this->availableCouriers[$courierName])) {
+        if (!isset($this->availableCouriers[$courierId])) {
             return false;
         }
 
         // creates the consignment which is passed to the queue processing bellow
-        $consignment = (new ConsignmentFactory())->createConsignment($courierName, $this->availableCouriers[$courierName]->assignNumber());
+        $consignment = (new ConsignmentFactory())->createConsignment($courierId, $this->availableCouriers[$courierId]->assignNumber());
 
         $this->parcelQueue->add($consignment);
     }
@@ -101,8 +100,8 @@ class Dispatcher
         $consignmentsCount = $this->parcelQueue->getQueueCount();
 
         $consignmentByCourier = [
-            'royal' => [],
-            'anc'   => [],
+            CouriersConfig::ROYAL_MAIL => [],
+            CouriersConfig::ANC        => [],
         ];
 
         // This is basically going through my fake queue and taking items from and grouping those consignments for each courier
