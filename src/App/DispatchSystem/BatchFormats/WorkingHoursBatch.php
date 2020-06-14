@@ -20,7 +20,6 @@ namespace App\DispatchSystem\BatchFormats;
 class WorkingHoursBatch implements DispatchPeriodInterface
 {
     /**
-     *
      * @return bool
      */
     public function isDispatchAvailable()

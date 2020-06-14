@@ -24,7 +24,7 @@ class Dispatcher
     protected $dispatchPeriod;
 
     /**
-     * @var ParcelQueue
+     * @var ConsignmentQueue
      */
     protected $parcelQueue;
 
@@ -37,12 +37,12 @@ class Dispatcher
      * Dispatcher constructor.
      *
      * @param DispatchPeriodInterface $dispatchPeriod
-     * @param ParcelQueue             $parcelQueue
+     * @param ConsignmentQueue        $consignmentQueue
      */
-    public function __construct(DispatchPeriodInterface $dispatchPeriod, ParcelQueue $parcelQueue)
+    public function __construct(DispatchPeriodInterface $dispatchPeriod, ConsignmentQueue $consignmentQueue)
     {
         $this->dispatchPeriod = $dispatchPeriod;
-        $this->parcelQueue    = $parcelQueue;
+        $this->parcelQueue    = $consignmentQueue;
     }
 
     /**

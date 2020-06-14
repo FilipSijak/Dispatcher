@@ -6,11 +6,11 @@ namespace App\DispatchSystem;
  * This will just act as a simplified array like queue. I guess in real life scenario this would be a part of Queueing
  * protocol with RabbitMQ or SQS but that's outside of the scope for this assignment
  *
- * Class ParcelQueue
+ * Class ConsignmentQueue
  *
  * @package App\DispatchSystem
  */
-class ParcelQueue
+class ConsignmentQueue
 {
     protected $items = [];
 
