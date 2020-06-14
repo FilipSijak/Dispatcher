@@ -1,0 +1,9 @@
+{
+    "name": "filip/gear4music",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "" : "src/"
+        }
+    }
+}
